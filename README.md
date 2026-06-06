@@ -55,19 +55,19 @@ POST /users
 ### Get User By Id
 
 ```http
-GET /users/{id}
+GET /cache/get-user/{id}
 ```
 
 ### Update User
 
 ```http
-PUT /users/{id}
+PUT /cache/update-users/{id}
 ```
 
 ### Delete User
 
 ```http
-DELETE /users/{id}
+DELETE /cache/remove-users/{id}
 ```
 
 ## Redis Configuration
