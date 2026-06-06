@@ -44,6 +44,82 @@ src
 3. Subsequent requests are served directly from Redis.
 4. When user data is updated, the cache is refreshed automatically.
 
+
+How I implemented Redis caching in Spring Boot
+
+1:Added dependencies
+Included Spring Cache and Spring Data Redis in pom.xml.
+
+2:Enabled caching
+Enabled caching at the configuration level.
+
+3:Configured Redis
+Configured Redis connection and cache settings in application.properties.
+
+4:Used cache annotations
+Used cache annotations on service methods.
+
+What is TTL?
+
+TTL (Time To Live) is the expiration time for a cache entry.
+
+Example: If TTL is 2 minutes, the cached value is automatically removed from Redis after 10 minutes.
+
+Why use TTL?
+
+Prevents stale data from remaining forever.
+
+Controls memory usage.
+
+Ensures periodic refresh from the database.
+
+Example configuration
+
+Here, every cache entry expires after 2 minutes.
+
+@Cacheable
+Purpose: Read-through caching.
+Flow:
+Check Redis for key users::1.
+If present → return cached value.
+If absent → execute method, fetch from DB, store in Redis, and return result.
+This is used for read operations.
+
+@CachePut
+Purpose: Update cache whenever the method executes.
+Unlike @Cacheable, the method always runs.
+Flow:
+Save user in DB.
+Store the returned User object in Redis.
+Cache stays synchronized with the latest data.
+This is commonly used for create/update operations.
+
+@CacheEvict
+Purpose: Remove data from cache.
+Flow:
+Delete from DB.
+Remove corresponding cache entry.
+Prevents stale cached data.
+Can also use allEntries = true to clear an entire cache.
+
+RedisCacheManager
+Purpose: Spring component that manages caches backed by Redis.
+It:
+Creates cache regions (e.g., users).
+Applies TTL settings.
+Handles serialization/deserialization.
+Communicates with Redis.
+If you don’t define it manually, Spring Boot can auto-configure it when spring.cache.type=redis is set.
+
+Serialization (Important)
+Initially you saw binary data and NullValue because Java serialization was being used.
+To store readable JSON:
+This stores objects as JSON in Redis instead of binary bytes.
+
+
+I implemented Redis caching in a Spring Boot application using Spring Cache. I enabled caching with @EnableCaching and configured Redis through Spring Data Redis. For read operations I used @Cacheable, which first checks Redis and only hits the database on a cache miss. For create/update operations I used @CachePut so the cache is refreshed with the latest User object, and for delete operations I used @CacheEvict to remove stale entries. I configured a TTL of 10 minutes so cached data expires automatically, and I used JSON serialization with GenericJackson2JsonRedisSerializer to store readable data in Redis.”
+
+
 ## API Endpoints
 
 ### Add User
