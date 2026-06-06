@@ -107,8 +107,8 @@ Initially you saw binary data and NullValue because Java serialization was being
 To store readable JSON:
 This stores objects as JSON in Redis instead of binary bytes.
 
-
-## I implemented Redis caching in a Spring Boot application using Spring Cache. I enabled caching with @EnableCaching and configured Redis through Spring Data Redis. For read operations I used @Cacheable, which first checks Redis and only hits the database on a cache miss. For create/update operations I used @CachePut so the cache is refreshed with the latest User object, and for delete operations I used @CacheEvict to remove stale entries. I configured a TTL of 10 minutes so cached data expires automatically, and I used JSON serialization with GenericJackson2JsonRedisSerializer to store readable data in Redis.”
+## Simple Explaination
+I implemented Redis caching in a Spring Boot application using Spring Cache. I enabled caching with @EnableCaching and configured Redis through Spring Data Redis. For read operations I used @Cacheable, which first checks Redis and only hits the database on a cache miss. For create/update operations I used @CachePut so the cache is refreshed with the latest User object, and for delete operations I used @CacheEvict to remove stale entries. I configured a TTL of 10 minutes so cached data expires automatically, and I used JSON serialization to store readable data in Redis.”
 
 
 ## API Endpoints
